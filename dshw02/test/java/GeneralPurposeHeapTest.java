@@ -87,43 +87,452 @@ class GeneralPurposeHeapTest {
         assertEquals(3, heap1.findMin());
     }
 
+
     @Test
-    void testPercDownDescendingOrder() {
-        Integer[] initialData = {null, 9, 8, 7, 6, 5, 4, 3, 2, 1}; // 1-based index, null at 0
-        GeneralPurposeHeap<Integer> heap = new GeneralPurposeHeap<>(initialData);
-        heap.precDown(1, initialData[1], initialData.length - 1, initialData);
-        assertArrayEquals(new Integer[]{null, 1, 2, 3, 4, 5, 9, 6, 7, 8}, initialData);
+    public void secTestInsertAndFindMin() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);
+
+        assertEquals(driver2, heap.findMin(), "The minimum element should be driver2");
     }
 
     @Test
-    void testPercDownPartialHeap() {
-        Integer[] initialData = {null, 5, 3, 4, 1}; // only first 4 elements are considered
-        GeneralPurposeHeap<Integer> heap = new GeneralPurposeHeap<>(initialData);
-        heap.precDown(1, initialData[1], 4, initialData);
-        assertArrayEquals(new Integer[]{null, 3, 1, 4, 5}, initialData);
+    public void secTestDeleteMin() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);
+
+        assertEquals(driver2, heap.deleteMin(), "The minimum element should be driver2");
+        assertEquals(driver1, heap.findMin(), "The new minimum element should be driver1");
     }
 
     @Test
-    void testPercDownWithDuplicates() {
-        Integer[] initialData = {null, 3, 3, 3, 2, 2, 2, 1}; // duplicates in heap
-        GeneralPurposeHeap<Integer> heap = new GeneralPurposeHeap<>(initialData);
-        heap.precDown(1, initialData[1], 7, initialData);
-        assertArrayEquals(new Integer[]{null, 1, 2, 2, 3, 2, 3, 3}, initialData);
+    public void testGetSize() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+
+        assertEquals(2, heap.getSize(), "The size of the heap should be 2");
     }
 
     @Test
-    void testPercDownSmallHeap() {
-        Integer[] initialData = {null, 2, 1}; // small heap with 2 elements
-        GeneralPurposeHeap<Integer> heap = new GeneralPurposeHeap<>(initialData);
-        heap.precDown(1, initialData[1], 2, initialData);
-        assertArrayEquals(new Integer[]{null, 1, 2}, initialData);
+    public void secTestMergeHeap() {
+        GeneralPurposeHeap<MoltDriver> heap1 = new GeneralPurposeHeap<>();
+        GeneralPurposeHeap<MoltDriver> heap2 = new GeneralPurposeHeap<>();
+        
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+        MoltDriver driver4 = new MoltDriver(4, "Driver4", 2);
+
+        heap1.insert(driver1);
+        heap1.insert(driver2);
+        heap2.insert(driver3);
+        heap2.insert(driver4);
+
+        heap1.mergeHeap(heap2);
+
+        assertEquals(4, heap1.getSize(), "The size of the merged heap should be 4");
+        assertEquals(driver4, heap1.findMin(), "The minimum element of the merged heap should be driver4");
     }
 
     @Test
-    void testPercDownLargeHeap() {
-        Integer[] initialData = {null, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1}; // larger heap
-        GeneralPurposeHeap<Integer> heap = new GeneralPurposeHeap<>(initialData);
-        heap.precDown(1, initialData[1], 10, initialData);
-        assertArrayEquals(new Integer[]{null, 1, 2, 3, 7, 6, 5, 4, 10, 9, 8}, initialData);
+    public void testHeapEmptyException() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+
+        assertThrows(NoSuchElementException.class, heap::findMin, "Should throw NoSuchElementException when heap is empty");
+        assertThrows(NoSuchElementException.class, heap::deleteMin, "Should throw NoSuchElementException when heap is empty");
     }
+
+    @Test
+    public void testHeapWithInitialData() {
+        MoltDriver[] drivers = {
+            new MoltDriver(1, "Driver1", 5),
+            new MoltDriver(2, "Driver2", 3),
+            new MoltDriver(3, "Driver3", 8),
+            new MoltDriver(4, "Driver4", 2)
+        };
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>(drivers);
+
+        assertEquals(4, heap.getSize(), "The size of the heap should be 4");
+        assertEquals(drivers[3], heap.findMin(), "The minimum element should be driver4");
+    }
+
+
+    @Test
+    public void atestInsertAndFindMin() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);
+
+        assertEquals(driver2, heap.findMin(), "The minimum element should be driver2");
+    }
+
+    @Test
+    public void atestDeleteMin() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);
+
+        assertEquals(driver2, heap.deleteMin(), "The minimum element should be driver2");
+        assertEquals(driver1, heap.findMin(), "The new minimum element should be driver1");
+    }
+
+    @Test
+    public void atestGetSize() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+
+        assertEquals(2, heap.getSize(), "The size of the heap should be 2");
+    }
+
+    @Test
+    public void atestMergeHeap() {
+        GeneralPurposeHeap<MoltDriver> heap1 = new GeneralPurposeHeap<>();
+        GeneralPurposeHeap<MoltDriver> heap2 = new GeneralPurposeHeap<>();
+        
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+        MoltDriver driver4 = new MoltDriver(4, "Driver4", 2);
+
+        heap1.insert(driver1);
+        heap1.insert(driver2);
+        heap2.insert(driver3);
+        heap2.insert(driver4);
+
+        heap1.mergeHeap(heap2);
+
+        assertEquals(4, heap1.getSize(), "The size of the merged heap should be 4");
+        assertEquals(driver4, heap1.findMin(), "The minimum element of the merged heap should be driver4");
+    }
+
+    @Test
+    public void btestHeapEmptyException() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+
+        assertThrows(NoSuchElementException.class, heap::findMin, "Should throw NoSuchElementException when heap is empty");
+        assertThrows(NoSuchElementException.class, heap::deleteMin, "Should throw NoSuchElementException when heap is empty");
+    }
+
+    @Test
+    public void atestHeapWithInitialData() {
+        MoltDriver[] drivers = {
+            new MoltDriver(1, "Driver1", 5),
+            new MoltDriver(2, "Driver2", 3),
+            new MoltDriver(3, "Driver3", 8),
+            new MoltDriver(4, "Driver4", 2)
+        };
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>(drivers);
+
+        assertEquals(4, heap.getSize(), "The size of the heap should be 4");
+        assertEquals(drivers[3], heap.findMin(), "The minimum element should be driver4");
+    }
+
+    @Test
+    public void testInsertBeyondInitialCapacity() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>(2);
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);  // This should trigger a resize
+
+        assertEquals(3, heap.getSize(), "The size of the heap should be 3");
+        assertEquals(driver2, heap.findMin(), "The minimum element should be driver2");
+    }
+
+    @Test
+    public void testDeleteAllElements() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+
+        heap.deleteMin();
+        heap.deleteMin();
+
+        assertEquals(0, heap.getSize(), "The size of the heap should be 0");
+        assertThrows(NoSuchElementException.class, heap::findMin, "Should throw NoSuchElementException when heap is empty");
+    }
+
+    @Test
+    public void testMergeEmptyHeap() {
+        GeneralPurposeHeap<MoltDriver> heap1 = new GeneralPurposeHeap<>();
+        GeneralPurposeHeap<MoltDriver> heap2 = new GeneralPurposeHeap<>();
+
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap1.insert(driver1);
+        heap1.insert(driver2);
+
+        heap1.mergeHeap(heap2);  // Merging with an empty heap
+
+        assertEquals(2, heap1.getSize(), "The size of the heap should remain 2");
+        assertEquals(driver2, heap1.findMin(), "The minimum element should be driver2");
+    }
+
+    @Test
+    public void testMergeIntoEmptyHeap() {
+        GeneralPurposeHeap<MoltDriver> heap1 = new GeneralPurposeHeap<>();
+        GeneralPurposeHeap<MoltDriver> heap2 = new GeneralPurposeHeap<>();
+
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap2.insert(driver1);
+        heap2.insert(driver2);
+
+        heap1.mergeHeap(heap2);  // Merging into an empty heap
+
+        assertEquals(2, heap1.getSize(), "The size of the heap should be 2");
+        assertEquals(driver2, heap1.findMin(), "The minimum element should be driver2");
+    }
+
+    @Test
+    public void testBuildHeapFromEmptyArray() {
+        MoltDriver[] emptyDrivers = {};
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>(emptyDrivers);
+
+        assertEquals(0, heap.getSize(), "The size of the heap should be 0");
+        assertThrows(NoSuchElementException.class, heap::findMin, "Should throw NoSuchElementException when heap is empty");
+    }
+
+    @Test
+    public void testFindMinAfterMultipleInserts() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 7);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 5);
+        MoltDriver driver4 = new MoltDriver(4, "Driver4", 1);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);
+        heap.insert(driver4);
+
+        assertEquals(driver4, heap.findMin(), "The minimum element should be driver4");
+    }
+
+    @Test
+    public void vtestInsertAndFindMin() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);
+
+        assertEquals(driver2, heap.findMin(), "The minimum element should be driver2");
+    }
+
+    @Test
+    public void qtestDeleteMin() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);
+
+        assertEquals(driver2, heap.deleteMin(), "The minimum element should be driver2");
+        assertEquals(driver1, heap.findMin(), "The new minimum element should be driver1");
+    }
+
+    @Test
+    public void qtestGetSize() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+
+        assertEquals(2, heap.getSize(), "The size of the heap should be 2");
+    }
+
+    @Test
+    public void qtestMergeHeap() {
+        GeneralPurposeHeap<MoltDriver> heap1 = new GeneralPurposeHeap<>();
+        GeneralPurposeHeap<MoltDriver> heap2 = new GeneralPurposeHeap<>();
+        
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+        MoltDriver driver4 = new MoltDriver(4, "Driver4", 2);
+
+        heap1.insert(driver1);
+        heap1.insert(driver2);
+        heap2.insert(driver3);
+        heap2.insert(driver4);
+
+        heap1.mergeHeap(heap2);
+
+        assertEquals(4, heap1.getSize(), "The size of the merged heap should be 4");
+        assertEquals(driver4, heap1.findMin(), "The minimum element of the merged heap should be driver4");
+    }
+
+    @Test
+    public void etestHeapEmptyException() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+
+        assertThrows(NoSuchElementException.class, heap::findMin, "Should throw NoSuchElementException when heap is empty");
+        assertThrows(NoSuchElementException.class, heap::deleteMin, "Should throw NoSuchElementException when heap is empty");
+    }
+
+    @Test
+    public void etestHeapWithInitialData() {
+        MoltDriver[] drivers = {
+            new MoltDriver(1, "Driver1", 5),
+            new MoltDriver(2, "Driver2", 3),
+            new MoltDriver(3, "Driver3", 8),
+            new MoltDriver(4, "Driver4", 2)
+        };
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>(drivers);
+
+        assertEquals(4, heap.getSize(), "The size of the heap should be 4");
+        assertEquals(drivers[3], heap.findMin(), "The minimum element should be driver4");
+    }
+
+    @Test
+    public void etestInsertBeyondInitialCapacity() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>(2);
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 8);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);  // This should trigger a resize
+
+        assertEquals(3, heap.getSize(), "The size of the heap should be 3");
+        assertEquals(driver2, heap.findMin(), "The minimum element should be driver2");
+    }
+
+    @Test
+    public void etestDeleteAllElements() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+
+        heap.deleteMin();
+        heap.deleteMin();
+
+        assertEquals(0, heap.getSize(), "The size of the heap should be 0");
+        assertThrows(NoSuchElementException.class, heap::findMin, "Should throw NoSuchElementException when heap is empty");
+    }
+
+    @Test
+    public void etestMergeEmptyHeap() {
+        GeneralPurposeHeap<MoltDriver> heap1 = new GeneralPurposeHeap<>();
+        GeneralPurposeHeap<MoltDriver> heap2 = new GeneralPurposeHeap<>();
+
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap1.insert(driver1);
+        heap1.insert(driver2);
+
+        heap1.mergeHeap(heap2);  // Merging with an empty heap
+
+        assertEquals(2, heap1.getSize(), "The size of the heap should remain 2");
+        assertEquals(driver2, heap1.findMin(), "The minimum element should be driver2");
+    }
+
+    @Test
+    public void etestMergeIntoEmptyHeap() {
+        GeneralPurposeHeap<MoltDriver> heap1 = new GeneralPurposeHeap<>();
+        GeneralPurposeHeap<MoltDriver> heap2 = new GeneralPurposeHeap<>();
+
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 5);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+
+        heap2.insert(driver1);
+        heap2.insert(driver2);
+
+        heap1.mergeHeap(heap2);  // Merging into an empty heap
+
+        assertEquals(2, heap1.getSize(), "The size of the heap should be 2");
+        assertEquals(driver2, heap1.findMin(), "The minimum element should be driver2");
+    }
+
+    @Test
+    public void etestBuildHeapFromEmptyArray() {
+        MoltDriver[] emptyDrivers = {};
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>(emptyDrivers);
+
+        assertEquals(0, heap.getSize(), "The size of the heap should be 0");
+        assertThrows(NoSuchElementException.class, heap::findMin, "Should throw NoSuchElementException when heap is empty");
+    }
+
+    @Test
+    public void extendstestFindMinAfterMultipleInserts() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>();
+        MoltDriver driver1 = new MoltDriver(1, "Driver1", 7);
+        MoltDriver driver2 = new MoltDriver(2, "Driver2", 3);
+        MoltDriver driver3 = new MoltDriver(3, "Driver3", 5);
+        MoltDriver driver4 = new MoltDriver(4, "Driver4", 1);
+
+        heap.insert(driver1);
+        heap.insert(driver2);
+        heap.insert(driver3);
+        heap.insert(driver4);
+
+        assertEquals(driver4, heap.findMin(), "The minimum element should be driver4");
+    }
+
+    @Test
+    public void testHeapWithLargeNumberOfElements() {
+        GeneralPurposeHeap<MoltDriver> heap = new GeneralPurposeHeap<>(1000);
+        MoltDriver[] drivers = new MoltDriver[1000];
+
+        for (int i = 0; i < 1000; i++) {
+            drivers[i] = new MoltDriver(i, "Driver" + i, 1000 - i);
+            heap.insert(drivers[i]);
+        }
+
+        assertEquals(1000, heap.getSize(), "The size of the heap should be 1000");
+        assertEquals(drivers[999], heap.findMin(), "The minimum element should be driver999");
+    }
+
 }
